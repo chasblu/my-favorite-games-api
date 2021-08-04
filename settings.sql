@@ -1,0 +1,3 @@
+CREATE DATABASE games;
+CREATE USER gamesuser WITH PASSWORD 'games';
+GRANT ALL PRIVILEGES ON DATABASE games TO gamesuser;
