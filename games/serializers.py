@@ -1,10 +1,26 @@
 from .models import Game, Review
 from rest_framework import serializers
 
+
+
+class ReviewSerializer(serializers.HyperlinkedModelSerializer):
+    game = serializers.HyperlinkedRelatedField(
+        view_name='game_detail', many=True, read_only=True
+        )
+    game_name = serializers.SlugRelatedField(
+        queryset=Game.objects.all(), slug_field='title', source='games'
+        )
+    owner = serializers.ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = Review
+        fields = ('id', 'game', 'game_name', 'title', 'body', 'created', 'owner',)
+
 class GameSerializer(serializers.HyperlinkedModelSerializer):
     reviews = serializers.HyperlinkedRelatedField(
         many=True, 
-        read_only=True
+        read_only=True,
+        view_name='review_list'
     )
 
     game_url = serializers.ModelSerializer.serializer_url_field(
@@ -13,20 +29,5 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'title', 'genre', 'release_date', 'rating', 'preview_url', 'owner')
-
-class ReviewSerializer(serializers.HyperlinkedModelSerializer):
-    game = serializers.HyperlinkedRelatedField(
-        view_name='game_detail', read_only=True
-        )
-    game_name = serializers.SlugRelatedField(
-        queryset=Restaurant.objects.all(), slug_field='name', source='game'
-        )
-    owner = serializers.ReadOnlyField(source='owner.username')
-
-    class Meta:
-        model = Review
-        fields = ('id', 'game', 'game_name', 'title', 'body', 'created', 'owner')
-
-
+        fields = ('id', 'title', 'genre', 'release_date', 'rating', 'preview_url', 'owner', 'reviews')
     

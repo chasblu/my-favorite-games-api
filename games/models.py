@@ -16,7 +16,8 @@ class Review(models.Model):
     title = models.CharField(max_length=255)
     body = models.TextField()
     game = models.ForeignKey(
-        Game, on_delete=models.CASCADE, related_name='reviews')
+        Game, on_delete=models.CASCADE, related_name='reviews'
+        )
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey('users.User', related_name='reviews', on_delete=models.CASCADE)
 
