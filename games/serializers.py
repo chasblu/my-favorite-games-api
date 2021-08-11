@@ -5,10 +5,10 @@ from rest_framework import serializers
 
 class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     game = serializers.HyperlinkedRelatedField(
-        view_name='game_detail', many=True, read_only=True
+        view_name='game_detail', read_only=True
         )
     game_name = serializers.SlugRelatedField(
-        queryset=Game.objects.all(), slug_field='title', source='games'
+        queryset=Game.objects.all(), slug_field='title', source='game'
         )
     owner = serializers.ReadOnlyField(source='owner.username')
 
@@ -29,5 +29,5 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Game
-        fields = ('id', 'title', 'genre', 'release_date', 'rating', 'preview_url', 'owner', 'reviews')
+        fields = ('id', 'title', 'genre', 'release_date', 'rating', 'preview_url', 'owner', 'reviews', 'game_url')
     
