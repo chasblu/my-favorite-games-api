@@ -17,11 +17,11 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'game', 'game_name', 'title', 'body', 'created', 'owner',)
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
-    reviews = serializers.HyperlinkedRelatedField(
-        many=True, 
+    reviews = ReviewSerializer(
+        many=True,
         read_only=True,
-        view_name='review_list'
     )
+    
 
     game_url = serializers.ModelSerializer.serializer_url_field(
         view_name='game_detail')
